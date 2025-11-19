@@ -33,7 +33,7 @@ export default function Dashboard() {
             </Link>
             {/* Desktop Tabs */}
             <nav className="hidden md:flex items-center space-x-2">
-              {["home", "cars", "bookings", "profile","about-page"].map((tab) => (
+              {["home", "cars", "bookings", "about-page", "profile"].map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
