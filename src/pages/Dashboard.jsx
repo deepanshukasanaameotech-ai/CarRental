@@ -4,6 +4,7 @@ import UserCarDetails from "../components/UserCarDetails";
 import UserBookings from "../components/UserBookings";
 import UserProfile from "../components/UserProfile";
 import UserDashboardHome from "../components/UserDashboardHome";
+import ContactUs from "../components/ContactUs";
 import { Link } from "react-router";
 import AboutPage from "../components/AboutPage";
 
@@ -33,7 +34,7 @@ export default function Dashboard() {
             </Link>
             {/* Desktop Tabs */}
             <nav className="hidden md:flex items-center space-x-2">
-              {["home", "cars", "bookings", "about-page", "profile"].map((tab) => (
+              {["home", "cars", "bookings", "about-page","contact-us","profile"].map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
@@ -59,6 +60,7 @@ export default function Dashboard() {
                 <option value="cars">Cars</option>
                 <option value="bookings">My Bookings</option>
                 <option value="profile">Profile</option>
+                <option value="contact-us">Contact Us</option>
                 <option value="about-page">About page</option>
               </select>
             </div>
@@ -84,6 +86,14 @@ export default function Dashboard() {
         >
           <h2 id="cars-heading" className="sr-only">Available Cars</h2>
           <UserCars onSelectCar={handleSelectCar} />
+        </section>
+
+        <section
+          className={activeTab === "contact-us" ? "block" : "hidden"}
+          aria-labelledby="contact-us-heading"
+        >
+          <h2 id="contact-us-heading" className="sr-only">Contact Us</h2>
+          <ContactUs />
         </section>
 
         {/* About Page */}
