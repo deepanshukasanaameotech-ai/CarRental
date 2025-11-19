@@ -5,6 +5,7 @@ import UserBookings from "../components/UserBookings";
 import UserProfile from "../components/UserProfile";
 import UserDashboardHome from "../components/UserDashboardHome";
 import { Link } from "react-router";
+import AboutPage from "../components/AboutPage";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("home");
@@ -27,20 +28,19 @@ export default function Dashboard() {
       <header className="bg-white shadow sticky top-0 z-40">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-           <Link to="/user/dashboard">
-            <h1 className="text-lg font-semibold text-blue-600">AutoRentX</h1>
+            <Link to="/user/dashboard">
+              <h1 className="text-lg font-semibold text-blue-600">AutoRentX</h1>
             </Link>
             {/* Desktop Tabs */}
             <nav className="hidden md:flex items-center space-x-2">
-              {["home", "cars", "bookings", "profile"].map((tab) => (
+              {["home", "cars", "bookings", "profile","about-page"].map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`px-3 py-2 rounded-md text-sm font-medium ${
-                    activeTab === tab
+                  className={`px-3 py-2 rounded-md text-sm font-medium ${activeTab === tab
                       ? "bg-blue-100 text-blue-700"
                       : "text-gray-700 hover:bg-gray-100"
-                  }`}
+                    }`}
                 >
                   {tab.charAt(0).toUpperCase() + tab.slice(1)}
                 </button>
@@ -59,6 +59,7 @@ export default function Dashboard() {
                 <option value="cars">Cars</option>
                 <option value="bookings">My Bookings</option>
                 <option value="profile">Profile</option>
+                <option value="about-page">About page</option>
               </select>
             </div>
           </div>
@@ -83,6 +84,15 @@ export default function Dashboard() {
         >
           <h2 id="cars-heading" className="sr-only">Available Cars</h2>
           <UserCars onSelectCar={handleSelectCar} />
+        </section>
+
+        {/* About Page */}
+        <section
+          className={activeTab === "about-page" ? "block" : "hidden"}
+          aria-labelledby="about-page-heading"
+        >
+          <h2 id="about-page-heading" className="sr-only">About Page</h2> {/* FIXED */}
+          <AboutPage />
         </section>
 
         {/* Bookings */}
