@@ -10,6 +10,7 @@ import UserCars from "./components/UserCars";
 import UserCarDetails from "./components/UserCarDetails";
 import UserBookings from "./components/UserBookings";
 import UserProfile from "./components/UserProfile";
+import Checkout from "./pages/Checkout";
 
 // ADMIN PAGES
 import AdminDashboard from "./pages/AdminDashboard";
@@ -41,6 +42,9 @@ export default function App() {
 
       <Route path="/admin/manage-cars" element={<ManageCars />} />
       <Route path="/admin/bookings" element={<BookingsAdmin />} />
+
+
+      <Route path="/checkout" element={<Checkout />} />
 
    
 

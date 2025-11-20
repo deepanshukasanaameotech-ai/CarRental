@@ -8,8 +8,14 @@ import { BASE_URL } from "../api";
  */
 export const buildImageUrl = (rawUrl) => {
   if (!rawUrl) return null;
-  if (rawUrl.startsWith("http")) return rawUrl;
-  return `${BASE_URL}/${rawUrl.replace(/^\/+/, "")}`;
+
+  // Already a full URL
+  if (/^https?:\/\//.test(rawUrl)) return rawUrl;
+
+  // Ensure path starts with a single slash
+  const normalized = rawUrl.startsWith("/") ? rawUrl : `/${rawUrl}`;
+
+  return `${BASE_URL}${normalized}`;
 };
 
 // Placeholder constants

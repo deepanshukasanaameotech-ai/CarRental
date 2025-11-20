@@ -37,10 +37,10 @@ const UserBookings = () => {
       const normalized = Array.isArray(response)
         ? response
         : Array.isArray(response?.data)
-        ? response.data
-        : Array.isArray(response?.bookings)
-        ? response.bookings
-        : [];
+          ? response.data
+          : Array.isArray(response?.bookings)
+            ? response.bookings
+            : [];
 
       setBookings(normalized);
     } catch (err) {
@@ -93,7 +93,7 @@ const UserBookings = () => {
   // -------------------------
   return (
     <div className="p-6">
-      
+
       <h2 className="text-2xl font-semibold mb-6">My Bookings</h2>
 
       <div className="grid md:grid-cols-2 gap-6">
@@ -182,7 +182,20 @@ const UserBookings = () => {
                 <p className={`font-medium ${statusColor(paymentStatus)}`}>
                   Payment: {paymentStatus.toUpperCase()}
                 </p>
+
+
               </div>
+
+              <button
+                onClick={() => {
+                  localStorage.setItem("checkout_amount", total);
+                  window.location.href = "/checkout";
+                }}
+                className="mt-3 bg-blue-600 text-white px-4 py-2 rounded-lg w-full"
+              >
+                Pay Now
+              </button>
+
             </div>
           );
         })}
