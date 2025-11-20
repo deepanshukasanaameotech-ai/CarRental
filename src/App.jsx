@@ -11,6 +11,8 @@ import UserCarDetails from "./components/UserCarDetails";
 import UserBookings from "./components/UserBookings";
 import UserProfile from "./components/UserProfile";
 import Checkout from "./pages/Checkout";
+import PaymentSuccess from "./pages/PaymentSuccess";
+import PaymentCanceled from "./pages/PaymentCanceled";
 
 // ADMIN PAGES
 import AdminDashboard from "./pages/AdminDashboard";
@@ -45,6 +47,8 @@ export default function App() {
 
 
       <Route path="/checkout" element={<Checkout />} />
+      <Route path="/payment-success" element={<PaymentSuccess />} />
+      <Route path="/payment-canceled" element={<PaymentCanceled />} />
 
    
 

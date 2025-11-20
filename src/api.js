@@ -1,7 +1,10 @@
 // api.js
 // Centralized API service with base URL, auth token handling, and all endpoints
 
-const BASE_URL = "https://autorentx.onrender.com"; // Backend URL
+// Backend URL - use Vite env var `VITE_API_BASE_URL` when set, otherwise default to localhost for local dev
+const BASE_URL = typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_API_BASE_URL
+  ? import.meta.env.VITE_API_BASE_URL
+  : "http://localhost:5000";
 
 // Helper: Get stored JWT
 const getToken = () => localStorage.getItem("token");

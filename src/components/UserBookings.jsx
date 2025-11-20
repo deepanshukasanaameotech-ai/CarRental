@@ -191,7 +191,19 @@ const UserBookings = () => {
 
               <button
                 onClick={() => {
+                  // Save amount and booking / user identifiers for checkout flow
                   localStorage.setItem("checkout_amount", total);
+                  localStorage.setItem("checkout_bookingId", booking._id || booking.id || "");
+                  try {
+                    const storedUser = localStorage.getItem("user");
+                    if (storedUser) {
+                      const user = JSON.parse(storedUser);
+                      const uid = user?._id || user?.id;
+                      if (uid) localStorage.setItem("checkout_userId", uid);
+                    }
+                  } catch {
+                    // ignore parse errors
+                  }
                   navigate("/checkout");
                 }}
                 className="mt-3 bg-blue-600 text-white px-4 py-2 rounded-lg w-full"

@@ -1,9 +1,20 @@
 import { useState } from "react";
-import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
+import { useStripe, useElements, CardElement, Elements } from "@stripe/react-stripe-js";
+import { useNavigate } from "react-router-dom";
 
-export default function CheckoutForm() {
+export default function CheckoutForm({ clientSecret, stripePromise }) {
+  // We mount a child Elements here with no options (we use CardElement path)
+  return (
+    <Elements stripe={stripePromise}>
+      <InnerCheckoutForm clientSecret={clientSecret} />
+    </Elements>
+  );
+}
+
+function InnerCheckoutForm({ clientSecret }) {
   const stripe = useStripe();
   const elements = useElements();
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -11,28 +22,30 @@ export default function CheckoutForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!stripe || !elements) return;
+    if (!stripe || !elements || !clientSecret) return;
 
     setLoading(true);
     setMessage("");
 
     const cardElement = elements.getElement(CardElement);
 
-    const { error, paymentIntent } = await stripe.confirmCardPayment(
-      // Stripe uses the clientSecret THROUGH Elements provider
-      // No need to set it here again.
-      undefined,
-      {
-        payment_method: {
-          card: cardElement,
-        },
-      }
-    );
+    const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: { card: cardElement },
+    });
 
     if (error) {
-      setMessage(error.message);
-    } else if (paymentIntent.status === "succeeded") {
+      setMessage(error.message || "Payment failed");
+      // Navigate to canceled/failure page after a short delay
+      setTimeout(() => navigate("/payment-canceled"), 1200);
+    } else if (paymentIntent && paymentIntent.status === "succeeded") {
       setMessage("Payment successful! 🎉");
+      // Optionally clear checkout localStorage
+      localStorage.removeItem("checkout_amount");
+      localStorage.removeItem("checkout_bookingId");
+      localStorage.removeItem("checkout_userId");
+      setTimeout(() => navigate("/payment-success"), 900);
+    } else {
+      setMessage("Payment status: " + (paymentIntent?.status || "unknown"));
     }
 
     setLoading(false);
@@ -47,7 +60,7 @@ export default function CheckoutForm() {
 
       <button
         type="submit"
-        disabled={!stripe || loading}
+        disabled={!stripe || loading || !clientSecret}
         className="bg-blue-600 text-white px-4 py-2 rounded disabled:bg-gray-400"
       >
         {loading ? "Processing..." : "Pay"}
