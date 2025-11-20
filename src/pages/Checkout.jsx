@@ -17,16 +17,23 @@ export default function Checkout() {
       try {
         const bookingId = localStorage.getItem("checkout_bookingId");
         const rawAmount = localStorage.getItem("checkout_amount");
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+          setError("Unauthorized: Please login again.");
+          setLoading(false);
+          return;
+        }
 
         if (!bookingId) {
-          setError("No booking selected for checkout. Please try again from bookings.");
+          setError("No booking selected for checkout.");
           setLoading(false);
           return;
         }
 
         const numeric = Number(rawAmount || 0);
         if (Number.isNaN(numeric) || numeric <= 0) {
-          setError("Invalid checkout amount. Please try again.");
+          setError("Invalid checkout amount.");
           setLoading(false);
           return;
         }
@@ -35,7 +42,10 @@ export default function Checkout() {
 
         const res = await fetch(`${BASE_URL}/payments/create-intent/${bookingId}`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
           body: JSON.stringify({ amount: amountInSmallest }),
         });
 
@@ -45,7 +55,8 @@ export default function Checkout() {
         }
 
         const data = await res.json();
-        setClientSecret(data.clientSecret || data.client_secret || "");
+
+        setClientSecret(data.clientSecret);
       } catch (err) {
         setError(err.message || "Failed to initialize payment");
       } finally {
