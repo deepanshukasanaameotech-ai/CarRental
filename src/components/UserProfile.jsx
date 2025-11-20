@@ -1,21 +1,19 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { buildImageUrl, PLACEHOLDER_AVATAR } from "../utils/imageUtils";
 
 export default function UserProfile() {
-  const [user, setUser] = useState(null);
-
-  // Load user from localStorage
-  useEffect(() => {
+  const [user] = useState(() => {
     const savedUser = localStorage.getItem("user");
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-    }
-  }, []);
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
+
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    window.location.href = "/CarRental";
+    navigate("/");
   };
 
   if (!user)

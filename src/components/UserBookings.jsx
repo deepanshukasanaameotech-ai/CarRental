@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { getBookingsByUser } from "../api";
 import AdminNavbar from "./AdminNavbar";
 import { buildImageUrl, PLACEHOLDER_CAR_SMALL as PLACEHOLDER_CAR } from "../utils/imageUtils";
@@ -54,6 +55,8 @@ const UserBookings = () => {
   useEffect(() => {
     loadBookings();
   }, [loadBookings]);
+
+  const navigate = useNavigate();
 
   // -------------------------
   // UI STATES
@@ -189,7 +192,7 @@ const UserBookings = () => {
               <button
                 onClick={() => {
                   localStorage.setItem("checkout_amount", total);
-                  window.location.href = "/checkout";
+                  navigate("/checkout");
                 }}
                 className="mt-3 bg-blue-600 text-white px-4 py-2 rounded-lg w-full"
               >
